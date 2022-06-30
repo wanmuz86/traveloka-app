@@ -21,7 +21,7 @@ factory Hotel.fromJson(Map<String,dynamic> json){
   );
 }
 
-// json to List
+// json to List [ Only if there is a ListView in the UI]
   static List<Hotel> hotelsFromJson(dynamic json){
     var searchResult = json["data"];
     List<Hotel> results = new List.empty(growable: true);
