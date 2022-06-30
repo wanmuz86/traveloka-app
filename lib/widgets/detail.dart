@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:traveloka_app/models/hotel_detail.dart';
+import '../models/hotel_detail.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
+
+  final int id;
+
+  DetailPage({required this.id});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
-
   HotelDetail? hotel;
 
   @override
@@ -19,29 +21,41 @@ class _DetailPageState extends State<DetailPage> {
     // TODO: implement initState
     super.initState();
     fetchHotelDetail().then((value) => {
-   setState((){
-     hotel = value;
-   })
-    });
+          setState(() {
+            hotel = value;
+          })
+        });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Detail"),),
-      body:
-      hotel == null ? CircularProgressIndicator() :
-      Column(
-        children: [
-          Text(hotel!.name),
-        ],
-      )
-    );
+        appBar: AppBar(
+          title: Text("Detail"),
+        ),
+        body: hotel == null
+            ? CircularProgressIndicator()
+            : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  children: [
+                    Text(hotel!.name, style: TextStyle(color: Colors.red, fontSize: 32),),
+                    SizedBox(),
+                    Image.network(hotel!.picUrl),
+                    SizedBox(height: 10,),
+                    Text(hotel!.description),
+                    SizedBox(height: 10,),
+                    Text(hotel!.address),
+                    SizedBox(height: 10,),
+                    Text(hotel!.policy)
+                  ],
+                ),
+            ));
   }
 
-
   Future<HotelDetail> fetchHotelDetail() async {
-    final response = await http
-        .get(Uri.parse('https://wanmuz-traveloka-api.herokuapp.com/api/hotels/1'));
+    final response = await http.get(
+        Uri.parse('https://wanmuz-traveloka-api.herokuapp.com/api/hotels/${widget.id}'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
