@@ -13,19 +13,28 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
 
   HotelDetail? hotel;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchHotelDetail().then((value) => {
-      hotel = value;
+   setState((){
+     hotel = value;
+   })
     });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Detail"),),
-      body:Text("Detail")
+      body:
+      hotel == null ? CircularProgressIndicator() :
+      Column(
+        children: [
+          Text(hotel!.name),
+        ],
+      )
     );
   }
 

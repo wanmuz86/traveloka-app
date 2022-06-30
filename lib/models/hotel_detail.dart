@@ -14,7 +14,9 @@ class HotelDetail {
 
   // 4) Create the fromJson method
 
-factory HotelDetail.fromJson(dynamic json){
+factory HotelDetail.fromJson(dynamic jsonResponse){
+  var json = jsonResponse["data"];
+  print(json);
   return HotelDetail(id: json["id"],
       name: json["name"],
       address: json["address"],
